@@ -1,8 +1,7 @@
 version: "3.8"
-build: ./octoprint
 services:
   octoprint:
-    image: octoprint/octoprint:latest
+    build: ./octoprint
     container_name: octoprint
     restart: unless-stopped
     ports:
