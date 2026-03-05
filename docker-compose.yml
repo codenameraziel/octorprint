@@ -1,0 +1,24 @@
+version: "3.8"
+build: ./octoprint
+services:
+  octoprint:
+    image: octoprint/octoprint:latest
+    container_name: octoprint
+    restart: unless-stopped
+    ports:
+      - "5000:5000"   # Interface web do OctoPrint
+      - "8080:8080"   # Stream da câmera (MJPG-Streamer)
+    volumes:
+      - octoprint_data:/octoprint
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
+    privileged: true
+    environment:
+      - ENABLE_MJPG_STREAMER=true
+      - MJPG_STREAMER_INPUT=-y -n -r 1920x1080 -f 30 -d /dev/video0
+      - MJPG_STREAMER_OUTPUT=-o output_http.so -w ./www
+
+volumes:
+  octoprint_data:
