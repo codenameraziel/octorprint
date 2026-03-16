@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     ports:
       - "5000:5000"   # Interface web do OctoPrint
-      - "8080:8080"   # Stream da câmera (MJPG-Streamer)
+      - "8080:8080"   # Stream da camera (MJPG-Streamer)
     volumes:
       - octoprint_data:/octoprint
       - ./config.yaml:/octoprint/config.yaml   # monta seu config.yaml direto no container
