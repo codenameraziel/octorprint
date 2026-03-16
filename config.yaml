@@ -1,0 +1,19 @@
+server:
+  host: 0.0.0.0
+  port: 5000
+  firstRun: false
+  baseUrl: /
+  scheme: https
+
+plugins:
+  announcements:
+    enabled: true
+  cura:
+    enabled: true
+  pluginmanager:
+    enabled: true
+  softwareupdate:
+    enabled: true
+
+accessControl:
+  enabled: true
