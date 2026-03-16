@@ -11,7 +11,6 @@ services:
       - "8080:8080"   # Stream da camera (MJPG-Streamer)
     volumes:
       - octoprint_data:/octoprint
-      - ./config.yaml:/octoprint/config.yaml   # monta seu config.yaml direto no container
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
       - /dev/video0:/dev/video0
