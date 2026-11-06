@@ -2,8 +2,9 @@ FROM octoprint/octoprint:latest
 
 USER root
 
-# Dependências corrigidas e otimizadas para o MJPG-Streamer
-RUN apt-get update && \
+# Remove listas antigas e força a aceitação da mudança de repositórios antigos do Debian
+RUN rm -rf /var/lib/apt/lists/* && \
+    apt-get update --allow-releaseinfo-change && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         git \
         build-essential \
@@ -18,7 +19,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Clonar MJPG-Streamer
-RUN git clone https://github.com/jacksonliam/mjpg-streamer.git /opt/mjpg-streamer
+RUN git clone https://github.com /opt/mjpg-streamer
 
 # Compilar e instalar
 RUN cd /opt/mjpg-streamer/mjpg-streamer-experimental && \
@@ -29,3 +30,4 @@ EXPOSE 5000
 EXPOSE 8080
 
 USER octoprint
+
