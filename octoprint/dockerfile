@@ -2,14 +2,14 @@ FROM octoprint/octoprint:latest
 
 USER root
 
-# Dependências necessárias para MJPG-Streamer
+# Dependências corrigidas e otimizadas para o MJPG-Streamer
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         git \
         build-essential \
         cmake \
         pkg-config \
-        libjpeg62-turbo-dev \
+        libjpeg-dev \
         libv4l-dev \
         v4l-utils \
         ffmpeg \
