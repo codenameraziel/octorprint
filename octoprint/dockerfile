@@ -2,25 +2,36 @@ FROM octoprint/octoprint:latest
 
 USER root
 
-# Dependências para MJPG-Streamer
+# Instala dependências necessárias
 RUN apt-get update && \
-    apt-get install -y \
-    git \
-    build-essential \
-    cmake \
-    libjpeg-dev \
-    imagemagick \
-    ffmpeg \
-    htop && \
+    apt-get install -y --no-install-recommends \
+        git \
+        build-essential \
+        cmake \
+        pkg-config \
+        libjpeg62-turbo-dev \
+        imagemagick \
+        ffmpeg \
+        htop && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Clonar e compilar MJPG-Streamer
+# Clona e compila o MJPG-Streamer
 RUN git clone https://github.com/jacksonliam/mjpg-streamer.git /opt/mjpg-streamer && \
     cd /opt/mjpg-streamer/mjpg-streamer-experimental && \
     make && \
     make install
 
+# Variáveis de ambiente
 ENV ENABLE_MJPG_STREAMER=true
-ENV MJPG_STREAMER_INPUT="-y -n -r 1920x1080 -f 30 -d /dev/video0"
-ENV MJPG_STREAMER_OUTPUT="-o output_http.so -w /opt/mjpg-streamer/mjpg-streamer-experimental/www"
+
+ENV MJPG_STREAMER_INPUT="input_uvc.so -d /dev/video0 -r 1920x1080 -f 30"
+
+ENV MJPG_STREAMER_OUTPUT="output_http.so -w /opt/mjpg-streamer/mjpg-streamer-experimental/www -p 8080"
+
+# Retornar ao usuário padrão da imagem
+USER octoprint
+
+EXPOSE 5000 8080
+
+CMD ["octoprint", "serve", "--host=0.0.0.0"]
