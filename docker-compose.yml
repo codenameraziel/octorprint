@@ -5,12 +5,19 @@ services:
     build:
       context: ./octoprint
       dockerfile: Dockerfile
+      
+      network: host
 
     container_name: octoprint
 
     restart: unless-stopped
 
     privileged: true
+
+    
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
     ports:
       - "5000:5000"
@@ -31,3 +38,4 @@ services:
 
 volumes:
   octoprint_data:
+:
