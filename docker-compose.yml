@@ -1,28 +1,33 @@
 version: "3.9"
 
 services:
-  # OctoPrint
   octoprint:
-    build: ./octoprint
+    build:
+      context: ./octoprint
+      dockerfile: Dockerfile
+
     container_name: octoprint
+
     restart: unless-stopped
+
+    privileged: true
+
     ports:
-      - "5000:5000"   # Interface web do OctoPrint
-      - "8080:8080"   # Stream da camera (MJPG-Streamer)
+      - "5000:5000"
+      - "8080:8080"
+
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/video0:/dev/video0"
+      - "/dev/video1:/dev/video1"
+
+    environment:
+      ENABLE_MJPG_STREAMER: "true"
+      MJPG_STREAMER_INPUT: "input_uvc.so -d /dev/video0 -r 1920x1080 -f 30"
+      MJPG_STREAMER_OUTPUT: "output_http.so -w /opt/mjpg-streamer/mjpg-streamer-experimental/www -p 8080"
+
     volumes:
       - octoprint_data:/octoprint
-    devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
-      - /dev/video0:/dev/video0
-      - /dev/video1:/dev/video1
-    privileged: true
-    environment:
-      - ENABLE_MJPG_STREAMER=true
-      - MJPG_STREAMER_INPUT=-y -n -r 1920x1080 -f 30 -d /dev/video0
-      - MJPG_STREAMER_OUTPUT=-o output_http.so -w /opt/mjpg-streamer/mjpg-streamer-experimental/www
 
 volumes:
   octoprint_data:
-
-
-  
