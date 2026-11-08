@@ -6,10 +6,10 @@ services:
     container_name: octoprint
     restart: unless-stopped
     ports:
-      - "5000:5000"   # Interface web do OctoPrint
-      - "8080:8080"   # Stream da câmera (MJPG-Streamer)
+      - "5000:5000"   
+      - "8080:8080"   
     volumes:
-      - octoprint_data:/octoprint
+      - octoprint_data:/octoprint 
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
       - /dev/video0:/dev/video0
@@ -20,10 +20,4 @@ services:
       - MJPG_STREAMER_INPUT=-y -n -r 1920x1080 -f 30 -d /dev/video0
       - MJPG_STREAMER_OUTPUT=-o output_http.so -w ./www
 
-volumes:
-  octoprint_data:
-    volumes:
-      - octoprint_data:/octoprint
 
-volumes:
-  octoprint_data:
